@@ -6,12 +6,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 
 public class MainActivity extends Activity implements View.OnClickListener {
     TextView mainTextView;
     Button mainButton;
+    EditText mainEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //2. Access Button defined in layout XML and listen for it here
         mainButton = (Button) findViewById(R.id.main_button);
         mainButton.setOnClickListener(this);
+        mainEditText = (EditText) findViewById(R.id.main_edittext);
     }
 
 

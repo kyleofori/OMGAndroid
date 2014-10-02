@@ -1,6 +1,8 @@
 package com.detroitlabs.kyleofori.omgandroid;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,6 +29,10 @@ public class MainActivity extends Activity implements View.OnClickListener,
     ArrayAdapter mArrayAdapter;
     ArrayList mNameList = new ArrayList();
     ShareActionProvider mShareActionProvider;
+
+    private static final String PREFS = "prefs";
+    private static final String PREF_NAME = "name";
+    SharedPreferences mSharedPreferences;
 
 
     @Override
@@ -50,8 +57,23 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
         // 5. Set this activity to react to list items being pressed
         mainListView.setOnItemClickListener(this);
+
+        // 7. Greet the user, or ask for their name if new
+        displayWelcome();
     }
 
+    public void displayWelcome() {
+        // Access the device's key-value storage
+        mSharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE);
+        // Read the user's name,
+        // or an empty string if nothing found
+        String name = mSharedPreferences.getString(PREF_NAME, "");
+
+        if (name.length() > 0) {
+            // If the name is valid, display a Toast welcoming them
+            Toast.makeText(this, "Welcome back, " + name + "!", Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,18 +114,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onClick(View view) {
         // Take what was typed into the EditText
         // and use in TextView
@@ -124,4 +134,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
         // to the console in Debug
         Log.d("omg android", position + ": " + mNameList.get(position));
     }
+
+
 }
